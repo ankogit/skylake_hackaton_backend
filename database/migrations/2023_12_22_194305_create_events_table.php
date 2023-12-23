@@ -20,10 +20,12 @@ return new class extends Migration {
             $table->string('type');
             $table->text('address')->nullable();
             $table->text('link')->nullable();
+            $table->text('record_link')->nullable();
             $table->decimal('duration')->nullable();
             $table->unsignedBigInteger('lector_id');
             $table->unsignedBigInteger('category_id');
             $table->integer('max_participants')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

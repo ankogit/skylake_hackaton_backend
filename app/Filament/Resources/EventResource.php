@@ -13,12 +13,16 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class EventResource extends Resource
 {
+    public static ?string $label = 'Мероприятие';
+    public static ?string $pluralLabel = 'Мероприятия';
     protected static ?string $model = Event::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     public static function form(Form $form): Form
     {
@@ -26,26 +30,39 @@ class EventResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
+                        Forms\Components\Select::make('lector_id')
+                            ->relationship(name: 'lector',
+                                modifyQueryUsing: fn(
+                                    Builder $query
+                                ) => $query->orderBy('first_name')->orderBy('last_name')
+                            )->getOptionLabelFromRecordUsing(fn(Model $record
+                            ) => "{$record->first_name} {$record->last_name}")->required(),
+                        Forms\Components\Select::make('category_id')
+                            ->relationship(name: 'category',
+                                titleAttribute: 'name')->required(),
                         Forms\Components\TextInput::make('title')
                             ->required()
-                            ->maxLength(2048)
-                            ->reactive()
-                            ->afterStateUpdated(function (Closure $set, $state) {
-                                $set('slug', Str::slug($state));
-                            }),
-                        Forms\Components\TextInput::make('slug')
-                            ->required()
                             ->maxLength(2048),
-                        Forms\Components\RichEditor::make('body')
+                        Forms\Components\RichEditor::make('description')
                             ->required(),
                         Forms\Components\Toggle::make('active')
                             ->required(),
-                        Forms\Components\DateTimePicker::make('published_at'),
+                        Forms\Components\DatePicker::make('date')
+                            ->required(),
+                        Forms\Components\TimePicker::make('time')->seconds(false)
+                            ->required(),
+                        Forms\Components\TextInput::make('duration')->integer(true)
+                            ->required(),
+                        Forms\Components\Select::make('type')
+                            ->options($options = ['online', 'offline']),
+                        Forms\Components\TextInput::make('link'),
+                        Forms\Components\TextInput::make('record_link'),
+                        Forms\Components\TextInput::make('max_participants')->integer(),
                     ])->columnSpan(8),
 
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\FileUpload::make('thumbnail'),
+                        Forms\Components\FileUpload::make('main_image'),
                     ])->columnSpan(4)
             ])->columns(12);
     }
@@ -54,16 +71,18 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('thumbnail'),
-                Tables\Columns\TextColumn::make('title')->searchable(['title', 'body'])->sortable(),
+                Tables\Columns\TextColumn::make('title')->searchable(['title', 'description'])->sortable(),
+
+                Tables\Columns\TextColumn::make('lector.full_name'),
+                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('date')
+                    ->date(),
+                Tables\Columns\TextColumn::make('time')
+                    ->time(format: 'h:m'),
+
                 Tables\Columns\IconColumn::make('active')
                     ->sortable()
                     ->boolean(),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->sortable()
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
             ])
             ->filters([
                 //

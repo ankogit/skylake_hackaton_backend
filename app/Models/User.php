@@ -6,6 +6,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -54,6 +55,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         return str_ends_with($this->email, '@admin.com');
     }
 
+    public function getUserAvatarUrlAttribute(): ?string
+    {
+        return $this->getFilamentAvatarUrl();
+    }
+
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->avatar_url;
@@ -67,5 +73,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     public function socialProviders(): HasMany
     {
         return $this->hasMany(SocialProvider::class);
+    }
+
+    public function surveyResults(): HasMany
+    {
+        return $this->hasMany(UserSurveyResult::class);
+    }
+
+    public function events(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'event_users');
     }
 }

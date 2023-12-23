@@ -21,7 +21,7 @@ class EventFactory extends Factory
     {
         return [
             'main_image' => $this->faker->imageUrl(640, 480, 'test', true),
-            'title' => $this->faker->title(),
+            'title' => $this->faker->jobTitle(),
             'description' => $this->faker->text(),
             'date' => $this->faker->date(),
             'time' => $this->faker->time(),

@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('contact_email')->nullable();
             $table->string('contact_telegram')->nullable();
+            $table->string('contact_link')->nullable();
             $table->timestamps();
         });
     }

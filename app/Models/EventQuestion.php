@@ -13,4 +13,11 @@ class EventQuestion extends Model
         'message',
         'votes',
     ];
+
+    public function isVoted()
+    {
+        if (auth()?->id()) {
+        }
+        return false;
+    }
 }

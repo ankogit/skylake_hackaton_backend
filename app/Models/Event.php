@@ -24,6 +24,8 @@ class Event extends Model
         'lector_id',
         'category_id',
         'max_participants',
+        'active',
+        'record_link',
     ];
 
     public function category(): BelongsTo

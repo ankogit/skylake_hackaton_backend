@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UsersResource\Pages;
-
-//use App\Filament\Resources\UsersResource\RelationManagers;
-use App\Models\User;
-use Closure;
+use App\Filament\Resources\LectorResource\Pages;
+use App\Filament\Resources\LectorResource\RelationManagers;
+use App\Models\Lector;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,14 +12,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 
-class UsersResource extends Resource
+class LectorResource extends Resource
 {
-    public static ?string $label = 'Пользователя';
-    public static ?string $pluralLabel = 'Пользователи';
-    protected static ?string $model = User::class;
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    public static ?string $label = 'Лектор';
+    public static ?string $pluralLabel = 'Лекторы';
+
+    protected static ?string $model = Lector::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
@@ -29,24 +28,27 @@ class UsersResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('email')
-                            ->email()
-                            ->required()
-                            ->maxLength(256),
                         Forms\Components\TextInput::make('first_name')
                             ->required()
                             ->maxLength(256),
                         Forms\Components\TextInput::make('last_name')
                             ->required()
                             ->maxLength(256),
-                        Forms\Components\TextInput::make('password')
-                            ->required()
-                            ->password()
+                        Forms\Components\TextInput::make('info')
                             ->maxLength(256),
+                        Forms\Components\TextInput::make('description'),
+                        Forms\Components\TextInput::make('contact_link')
+                            ->maxLength(256),
+                        Forms\Components\TextInput::make('contact_telegram')
+                            ->maxLength(256),
+                        Forms\Components\TextInput::make('contact_email')
+                            ->maxLength(256),
+
 
                     ])->columnSpan(8),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -54,7 +56,7 @@ class UsersResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')->sortable(),
                 Tables\Columns\TextColumn::make('last_name')->sortable(),
-                Tables\Columns\TextColumn::make('email')->searchable(['first_name', 'email'])->sortable(),
+                Tables\Columns\TextColumn::make('contact_email')->searchable(['first_name', 'email'])->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
                     ->dateTime(),
@@ -84,11 +86,9 @@ class UsersResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUsers::route('/create'),
-            'edit' => Pages\EditUsers::route('/{record}/edit'),
-            'view' => Pages\ViewUser::route('/{record}'),
-
+            'index' => Pages\ListLectors::route('/'),
+            'create' => Pages\CreateLector::route('/create'),
+            'edit' => Pages\EditLector::route('/{record}/edit'),
         ];
     }
 }

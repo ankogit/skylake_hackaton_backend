@@ -10,6 +10,7 @@ use App\Http\Resources\EventFeedbackResource;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\EventsResource;
 use App\Models\Event;
+use App\Models\EventQuestion;
 
 class EventController extends Controller
 {
@@ -83,5 +84,10 @@ class EventController extends Controller
             'message' => $input['message'],
         ]);
         return new EventResource($event);
+    }
+
+    public function rateQuestion(RateEventRequest $request, EventQuestion $eventQuestion): EventFeedbackResource
+    {
+        return new EventFeedbackResource(Event::find($eventQuestion->event_id));
     }
 }

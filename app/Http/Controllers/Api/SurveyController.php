@@ -45,6 +45,7 @@ class SurveyController extends Controller
 
     /*
      * Get my survey result
+     *
      */
     public function getSurveyResults(): SurveyResultsResource
     {
