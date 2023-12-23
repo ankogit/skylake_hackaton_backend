@@ -76,6 +76,12 @@ class EventController extends Controller
      */
     public function createQuestion(CreateQuestionRequest $request, Event $event): EventResource
     {
+        $input = $request->input();
+        $event->questions()->create([
+            'event_id' => $event->id,
+            'user_id' => auth()->id(),
+            'message' => $input['message'],
+        ]);
         return new EventResource($event);
     }
 }

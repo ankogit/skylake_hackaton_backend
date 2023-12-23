@@ -9,8 +9,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Passport\Exceptions\OAuthServerException;
-use Sentry\Laravel\Integration;
-use Spatie\Permission\Exceptions\UnauthorizedException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
@@ -45,9 +43,6 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            Integration::captureUnhandledException($e);
-        });
     }
 
     public function render($request, Throwable $e)

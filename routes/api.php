@@ -30,7 +30,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::post('login', 'API\RegisterController@login');
 Route::middleware('auth:api')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
-//    Route::resource('products', 'API\ProductController');
+
+    Route::post('/events/{event}/join', [EventController::class, 'join'])->name('joinEvent');
+    Route::post('/events/{event}/left', [EventController::class, 'left'])->name('leftEvent');
+    Route::post('/events/{event}/rate', [EventController::class, 'rate'])->name('rateEvent');
+    Route::post('/events/{event}/question', [EventController::class, 'createQuestion'])->name('createQuestionEvent');
 });
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -45,10 +49,6 @@ Route::get('/lectors/{lector}', [LectorController::class, 'show'])->name('getLec
 
 Route::get('/events', [EventController::class, 'index'])->name('eventsList');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('getEvents');
-Route::post('/events/{event}/join', [EventController::class, 'join'])->name('joinEvent');
-Route::post('/events/{event}/left', [EventController::class, 'left'])->name('leftEvent');
-Route::post('/events/{event}/rate', [EventController::class, 'rate'])->name('rateEvent');
-Route::post('/events/{event}/question', [EventController::class, 'createQuestion'])->name('createQuestionEvent');
 
 ## Password Reset
 //Route::post('/reset-password', [ResetPasswordController::class, 'sendVerificationCode']);

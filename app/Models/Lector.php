@@ -10,6 +10,10 @@ class Lector extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'email',
+        'info',
+        'description',
+        'contact_email',
+        'contact_telegram',
+        'contact_link',
     ];
 }

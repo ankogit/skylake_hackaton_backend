@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'main_image',
         'title',
@@ -41,5 +44,10 @@ class Event extends Model
     public function sources()
     {
         return $this->hasMany(EventSource::class);
+    }
+
+    public function feedbacks(): HasMany
+    {
+        return $this->hasMany(EventFeedback::class);
     }
 }
