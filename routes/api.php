@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,22 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Route::middleware('auth')->group(function () {
+Route::apiResource('events', EventController::class);
+//});
+//
+//Route::post('register', 'API\RegisterController@register');
+//Route::post('login', 'API\RegisterController@login');
+Route::middleware('auth:api')->group(function () {
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+//    Route::resource('products', 'API\ProductController');
+});
+
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/social/auth', [AuthController::class, 'socialAuth'])->name('socialAuth');
+
+## Password Reset
+//Route::post('/reset-password', [ResetPasswordController::class, 'sendVerificationCode']);
+//Route::post('/reset-password/update', [ResetPasswordController::class, 'resetPassword']);
