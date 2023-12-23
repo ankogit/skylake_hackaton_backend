@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\LectorController;
+use App\Http\Controllers\Api\SurveyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::post('register', 'API\RegisterController@register');
 //Route::post('login', 'API\RegisterController@login');
 Route::middleware('auth:api')->group(function () {
+    Route::get('/surveys', [SurveyController::class, 'index'])->name('getSurveys');
+    Route::post('/survey/create', [SurveyController::class, 'postSurvey'])->name('postSurvey');
+    Route::get('/surveys/my', [SurveyController::class, 'getSurveyResults'])->name('getSurveyResults');
+
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
 
     Route::post('/events/{event}/join', [EventController::class, 'join'])->name('joinEvent');
@@ -49,6 +54,9 @@ Route::get('/lectors/{lector}', [LectorController::class, 'show'])->name('getLec
 
 Route::get('/events', [EventController::class, 'index'])->name('eventsList');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('getEvents');
+
+
+
 
 ## Password Reset
 //Route::post('/reset-password', [ResetPasswordController::class, 'sendVerificationCode']);

@@ -20,7 +20,7 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'main_image' => 'https://media.bizj.us/view/img/12332186/yccclector85rc-8164*900xx1835-1032-0-48.jpg',
+            'main_image' => $this->faker->imageUrl(640, 480, 'test', true),
             'title' => $this->faker->title(),
             'description' => $this->faker->text(),
             'date' => $this->faker->date(),
