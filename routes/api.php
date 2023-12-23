@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\LectorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +36,12 @@ Route::middleware('auth:api')->group(function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/social/auth', [AuthController::class, 'socialAuth'])->name('socialAuth');
+
+Route::get('/categories', [CategoryController::class, 'index'])->name('categoryList');
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('getCategory');
+
+Route::get('/lectors', [LectorController::class, 'index'])->name('lectorList');
+Route::get('/lectors/{lector}', [LectorController::class, 'show'])->name('getLector');
 
 Route::get('/events', [EventController::class, 'index'])->name('eventsList');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('getEvents');
