@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //Route::middleware('auth')->group(function () {
-Route::apiResource('events', EventController::class);
+//Route::apiResource('events', EventController::class);
 //});
 //
 //Route::post('register', 'API\RegisterController@register');
@@ -34,6 +34,13 @@ Route::middleware('auth:api')->group(function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/social/auth', [AuthController::class, 'socialAuth'])->name('socialAuth');
+
+Route::get('/events', [EventController::class, 'index'])->name('eventsList');
+Route::get('/events/{event}', [EventController::class, 'show'])->name('getEvents');
+Route::post('/events/{event}/join', [EventController::class, 'join'])->name('joinEvent');
+Route::post('/events/{event}/left', [EventController::class, 'left'])->name('leftEvent');
+Route::post('/events/{event}/rate', [EventController::class, 'rate'])->name('rateEvent');
+Route::post('/events/{event}/question', [EventController::class, 'createQuestion'])->name('createQuestionEvent');
 
 ## Password Reset
 //Route::post('/reset-password', [ResetPasswordController::class, 'sendVerificationCode']);

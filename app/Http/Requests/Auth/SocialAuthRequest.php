@@ -12,8 +12,6 @@ class SocialAuthRequest extends FormRequest
         return [
             'provider' => ['required', 'max:255'],
             'token' => ['required'],
-            'secret' => ['sometimes', 'required'],
-            'invite_code' => ['sometimes', 'required', 'exists:invites,code'],
         ];
     }
 }

@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class EventQuestion extends Model
 {
     protected $fillable = [
-        'name'
+        'event_id',
+        'user_id',
+        'message',
+        'votes',
     ];
 }
