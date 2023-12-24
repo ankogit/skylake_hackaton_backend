@@ -43,7 +43,7 @@ class Event extends Model
         return $this->hasMany(EventQuestion::class);
     }
 
-    public function sources()
+    public function sources(): HasMany
     {
         return $this->hasMany(EventSource::class);
     }

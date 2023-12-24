@@ -51,10 +51,37 @@ class EventResource extends Resource
                             ->required(),
                         Forms\Components\TimePicker::make('time')->seconds(false)
                             ->required(),
-                        Forms\Components\TextInput::make('duration')->integer(true)
+                        Forms\Components\TextInput::make('duration')
                             ->required(),
                         Forms\Components\Select::make('type')
                             ->options($options = ['online', 'offline']),
+                        Forms\Components\Repeater::make('sources')
+                            ->relationship()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('link')
+                                    ->required()
+                            ])
+                            ->columns(2),
+                        Forms\Components\Repeater::make('questions')
+                            ->relationship()
+                            ->schema([
+                                Forms\Components\TextInput::make('message')
+                                    ->disabled(),
+                                Forms\Components\TextInput::make('votes')
+                                    ->disabled()
+                            ])
+                            ->columns(2),
+//                            ->itemLabel(fn(array $state): ?string => $state['name'] ?? null)
+//                        Forms\Components\Select::make('sources')
+//                            ->relationship('sources', titleAttribute: 'name')
+//                            ->createOptionForm([
+//                                Forms\Components\TextInput::make('name')
+//                                    ->required(),
+//                                Forms\Components\TextInput::make('link')
+//                                    ->required()
+//                            ]),
                         Forms\Components\TextInput::make('link'),
                         Forms\Components\TextInput::make('record_link'),
                         Forms\Components\TextInput::make('max_participants')->integer(),
