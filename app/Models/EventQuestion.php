@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EventQuestion extends Model
 {
@@ -16,8 +17,17 @@ class EventQuestion extends Model
 
     public function isVoted()
     {
-        if (auth()?->id()) {
+        if (!auth()?->id()) {
+            return false;
+        }
+        if ($this->voteUsers()->find(auth()?->id())) {
+            return true;
         }
         return false;
+    }
+
+    public function voteUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'event_question_votes');
     }
 }

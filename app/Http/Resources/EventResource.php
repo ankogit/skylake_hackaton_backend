@@ -23,7 +23,6 @@ class EventResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'date' => $this->date,
-
             'time' => $this->time,
             'type' => $this->type,
             'link' => $this->link,
@@ -46,6 +45,10 @@ class EventResource extends JsonResource
             'lector' => new LectorResource($this->lector),
             /** @var string */
             'created_at' => $this->created_at,
+            /** @var boolean */
+            'subscribed' => $this->subscribed,
+            /** @var integer */
+            'participants' => $this->users->count(),
         ];
     }
 }

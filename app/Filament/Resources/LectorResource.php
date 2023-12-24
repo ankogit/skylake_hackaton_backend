@@ -3,15 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LectorResource\Pages;
-use App\Filament\Resources\LectorResource\RelationManagers;
+
+//use App\Filament\Resources\LectorResource\RelationManagers;
 use App\Models\Lector;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LectorResource extends Resource
 {

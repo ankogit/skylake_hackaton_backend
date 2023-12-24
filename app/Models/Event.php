@@ -52,4 +52,21 @@ class Event extends Model
     {
         return $this->hasMany(EventFeedback::class);
     }
+
+    public function getSubscribedAttribute()
+    {
+        if (!auth()?->id()) {
+            return false;
+        }
+
+        if ($this->users()->find(auth()?->id())) {
+            return true;
+        }
+        return false;
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'event_users');
+    }
 }

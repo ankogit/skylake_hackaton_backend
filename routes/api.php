@@ -40,6 +40,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/events/{event}/left', [EventController::class, 'left'])->name('leftEvent');
     Route::post('/events/{event}/rate', [EventController::class, 'rate'])->name('rateEvent');
     Route::post('/events/{event}/question', [EventController::class, 'createQuestion'])->name('createQuestionEvent');
+    Route::post('/events/question/{eventQuestion}',
+        [EventController::class, 'rateQuestion'])->name('voteQuestionEvent');
 });
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');

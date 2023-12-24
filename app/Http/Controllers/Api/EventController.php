@@ -11,6 +11,7 @@ use App\Http\Resources\EventResource;
 use App\Http\Resources\EventsResource;
 use App\Models\Event;
 use App\Models\EventQuestion;
+use http\Env\Request;
 
 class EventController extends Controller
 {
@@ -41,6 +42,7 @@ class EventController extends Controller
      */
     public function join(Event $event): EventResource
     {
+        $event->users()->attach(auth()->id());
         return new EventResource($event);
     }
 
@@ -52,6 +54,7 @@ class EventController extends Controller
      */
     public function left(Event $event): EventResource
     {
+        $event->users()->detach(auth()->id());
         return new EventResource($event);
     }
 
@@ -79,15 +82,19 @@ class EventController extends Controller
     {
         $input = $request->input();
         $event->questions()->create([
-            'event_id' => $event->id,
             'user_id' => auth()->id(),
             'message' => $input['message'],
         ]);
         return new EventResource($event);
     }
 
-    public function rateQuestion(RateEventRequest $request, EventQuestion $eventQuestion): EventFeedbackResource
+    public function rateQuestion(EventQuestion $eventQuestion): EventResource
     {
-        return new EventFeedbackResource(Event::find($eventQuestion->event_id));
+        if (!$eventQuestion->voteUsers()->find(auth()->id())) {
+            $eventQuestion->voteUsers()->attach(auth()->id());
+            $eventQuestion->votes += 1;
+            $eventQuestion->save();
+        }
+        return new EventResource(Event::find($eventQuestion->event_id));
     }
 }
